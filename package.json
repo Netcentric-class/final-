@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build": "cd frontend && npm install --include=dev && npm run build && cd ../backend && npm install && rm -rf public && mkdir public && cp -r ../frontend/dist/* public/",
+    "start": "cd backend && npm start",
+    "seed:admin": "cd backend && npm run seed:admin",
+    "seed:users": "cd backend && npm run seed:users",
+    "seed:books": "cd backend && npm run seed:books"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}

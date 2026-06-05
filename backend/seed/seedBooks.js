@@ -1,90 +1,47 @@
-require("dotenv").config();
+require('dotenv').config();
+const mongoose = require('mongoose');
+const Book = require('../models/Book');
+const connectDB = require('../config/db');
 
-const mongoose = require("mongoose");
-
-const Book = require("../models/Book");
-const connectDB = require("../config/db");
-
-const genres = [
-  "Fantasy",
-  "Science Fiction",
-  "History",
-  "Biography",
-  "Mystery",
-  "Programming",
-  "Business"
-];
-
+const genres = ['Fantasy', 'Science Fiction', 'Mystery', 'History', 'Biography', 'Technology', 'Romance', 'Horror'];
 const authors = [
-  "J.R.R. Tolkien",
-  "George Orwell",
-  "Isaac Asimov",
-  "Walter Isaacson",
-  "Robert Martin",
-  "Agatha Christie",
-  "Stephen King",
-  "Yuval Noah Harari",
-  "James Clear",
-  "Andrew Hunt",
-  "David Thomas",
-  "Mark Twain"
+  'James Carter',
+  'Maria Lewis',
+  'David Brooks',
+  'Sophia Adams',
+  'Daniel Green',
+  'Linda Scott',
+  'Michael Turner',
+  'Grace Walker'
 ];
 
-const titlePrefixes = [
-  "The Lost",
-  "The Hidden",
-  "The Great",
-  "The Final",
-  "The Modern",
-  "The Ultimate",
-  "The Practical"
-];
-
-const titleSuffixes = [
-  "Journey",
-  "Empire",
-  "Code",
-  "Mystery",
-  "Adventure",
-  "Guide",
-  "Library"
+const bookNames = [
+  'The Silent Library',
+  'Code of Tomorrow',
+  'Shadows in the Hall',
+  'The Last Archive',
+  'Journey Through Time',
+  'Digital Dreams',
+  'The Forgotten Map',
+  'Beyond the River',
+  'The Hidden Chapter',
+  'Learning the Future'
 ];
 
 function pick(array) {
-  return array[
-    Math.floor(Math.random() * array.length)
-  ];
-}
-
-function randomInt(min, max) {
-  return (
-    Math.floor(
-      Math.random() * (max - min + 1)
-    ) + min
-  );
+  return array[Math.floor(Math.random() * array.length)];
 }
 
 function makeBook(index) {
-  const actualCount = randomInt(1, 20);
-
-  const quantity =
-    Math.random() < 0.15
-      ? 0
-      : randomInt(0, actualCount);
+  const actualCount = Math.floor(Math.random() * 8) + 2;
+  const quantity = Math.floor(Math.random() * (actualCount + 1));
 
   return {
-    name: `${pick(titlePrefixes)} ${pick(
-      titleSuffixes
-    )} ${index}`,
-
-    year: randomInt(1950, 2025),
-
+    name: `${pick(bookNames)} ${index}`,
+    year: 1980 + (index % 45),
     genre: pick(genres),
-
     authors: [pick(authors)],
-
     actualCount,
-
     quantity
   };
 }
@@ -103,9 +60,7 @@ async function seedBooks() {
 
     await Book.insertMany(books);
 
-    console.log(
-      "Inserted 100 books successfully."
-    );
+    console.log('Inserted 100 book records');
   } catch (error) {
     console.error(error.message);
   } finally {

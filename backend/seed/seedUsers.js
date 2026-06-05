@@ -1,10 +1,8 @@
-require("dotenv").config();
-
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-
-const User = require("../models/User");
-const connectDB = require("../config/db");
+require('dotenv').config();
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const User = require('../models/User');
+const connectDB = require('../config/db');
 
 async function seedUsers() {
   try {
@@ -13,31 +11,20 @@ async function seedUsers() {
     const users = [];
 
     for (let i = 1; i <= 5; i++) {
-      const passwordHash = await bcrypt.hash(
-        `password${i}`,
-        10
-      );
+      const passwordHash = await bcrypt.hash(`user${i}pass1`, 10);
 
       users.push({
         username: `user${i}`,
         passwordHash,
-        role: "user"
+        role: 'user'
       });
     }
 
-    await User.deleteMany({
-      role: "user"
-    });
-
+    await User.deleteMany({ role: 'user', username: /^user/ });
     await User.insertMany(users);
 
-    console.log("Seeded 5 users");
-
-    console.log("user1 / password1");
-    console.log("user2 / password2");
-    console.log("user3 / password3");
-    console.log("user4 / password4");
-    console.log("user5 / password5");
+    console.log('Seeded 5 users');
+    console.log('Example login: user1 / user1pass1');
   } catch (error) {
     console.error(error.message);
   } finally {

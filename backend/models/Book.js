@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema(
   {
@@ -7,48 +7,38 @@ const bookSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-
     year: {
       type: Number,
       required: true,
       min: 0
     },
-
     genre: {
       type: String,
       required: true,
       trim: true
     },
-
-    authors: [
-      {
-        type: String,
-        required: true,
-        trim: true
+    authors: {
+      type: [String],
+      required: true,
+      validate: {
+        validator: function (value) {
+          return value.length > 0;
+        },
+        message: 'At least one author is required'
       }
-    ],
-
+    },
     actualCount: {
       type: Number,
       required: true,
       min: 0
     },
-
     quantity: {
       type: Number,
       required: true,
-      min: 0,
-      validate: {
-        validator: function (value) {
-          return value <= this.actualCount;
-        },
-        message: "Available quantity cannot exceed total copies owned."
-      }
+      min: 0
     }
   },
-  {
-    timestamps: true
-  }
+  { timestamps: true }
 );
 
-module.exports = mongoose.model("Book", bookSchema);
+module.exports = mongoose.model('Book', bookSchema);
